@@ -210,8 +210,19 @@ public class ListaNumeros
      * 
      */
     public int[][] toArray2D() {
-
-        return null;
+        int[][] ragged = new int[lista.length][];
+        for (int i = 0; i < lista.length; i++){
+            ragged[i] = new int[i + 1];
+            ragged[i][0] = 1;
+            ragged[i][ragged[i].length - 1] = 1;
+            for (int cont = 1; cont < i; cont++){
+                for (int j = 0; j < cont; j++){
+                    ragged[i][j + 1] = ragged[i - 1][j] 
+                    + ragged[i - 1][j + 1];
+                }
+            }
+        }
+        return ragged;
     }
 
     /**
@@ -219,20 +230,49 @@ public class ListaNumeros
      * Contiene código para probar los métodos de ListaNumeros
      */
     public static void main(String[] args) {
-        ListaNumeros lista = new ListaNumeros(20);
+        ListaNumeros lista = new ListaNumeros(11);
 
-        System.out.println("--- addElemento() y toString() -------");
+        System.out.println("------ addElemento() y toString() ------\n");
         int[] valores = {21, -5, 6, -7, 21, -17, 21, 15, 22, 21, 77};
         for (int i = 0; i < valores.length; i++) {
             lista.addElemento(valores[i]);
         }
         System.out.println(lista.toString());
+        System.out.println();
 
-        System.out.println("--- buscarPosiciones() -------");
+        System.out.println("------ buscarPosiciones() ------\n");
         int numero = 21;
         System.out.println(lista.toString());
-        System.out.println("\t" + numero + " aparece en posiciones ");
-        // seguir completando
+        System.out.println();
+        System.out.println(numero + " aparece en posiciones: " + 
+            Arrays.toString(lista.buscarPosicionesDe(numero)));
+        System.out.println();
 
+        System.out.println("------ buscarBinario() ------\n");
+        if (lista.buscarBinario(numero) >= 0){
+            System.out.println("El numero " + numero + " está en la lista");
+        }
+        else{
+            System.out.println("No se encuentra el numero " + numero +
+                " en la lista");
+        }
+        System.out.println();
+
+        System.out.println("------ invertir() ------\n");
+        System.out.println("Lista original:");
+        System.out.println(lista.toString());
+        System.out.println("\nLista invertida por grupos de 2:");
+        lista.invertir(2);
+        System.out.println(lista.toString());
+        System.out.println();
+
+        System.out.println("------ toArray2D() ------\n");
+        int[][] array = lista.toArray2D();
+        for(int i = 0; i < array.length; i++){
+            for(int j = 0; j < array[i].length; j++){
+                System.out.printf("%5d",array[i][j]);
+            }
+            System.out.println();
+        }
     }
 }
