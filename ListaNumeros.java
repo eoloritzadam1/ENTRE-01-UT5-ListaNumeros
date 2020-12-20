@@ -1,4 +1,3 @@
-
 /**
  * La clase representa a una lista de 
  * números enteros
@@ -26,6 +25,15 @@ public class ListaNumeros
     }
 
     /**
+     * Constructor para pruebas
+     *
+     */
+    public ListaNumeros() {
+        lista = new int[]{9,3,7,4,9,2,5,8,12,45};
+        pos = 0;
+    }
+
+    /**
      * Añade un valor siempre al principio de la lista
      * 
      * @param numero el valor que se añade. No se hace nada si la lista está
@@ -33,11 +41,11 @@ public class ListaNumeros
      * @return true si se ha podido añadir, false en otro caso
      */
     public boolean addElemento(int numero) {
-        pos++;
         if (pos < lista.length){
             for(int i = pos; i != 0; i--){
                 lista[i] = lista[i - 1];
             }
+            pos++;
             lista[0] = numero;
             return true;
         }
@@ -52,7 +60,6 @@ public class ListaNumeros
      */
     public boolean estaCompleta() {
         return pos == lista.length;
-
     }
 
     /**
@@ -68,7 +75,6 @@ public class ListaNumeros
      */
     public int getTotalNumeros() {
         return pos;
-
     }
 
     /**
@@ -78,7 +84,6 @@ public class ListaNumeros
         for (int i = 0; i < lista.length; i++){
             lista[i] = 0;
         }
-
     }
 
     /**
@@ -89,12 +94,14 @@ public class ListaNumeros
      */
     public String toString() {
         String str = "";
-        for (int i = 0; i < lista.length; i++){
-            str += String.format("%8d",lista[i]);
-        }
-        str += "\n";
-        for (int i = 0; i < lista.length; i++){
-            str += String.format("%8d",i);
+        if (!estaVacia()){
+            for (int i = 0; i < lista.length; i++){
+                str += String.format("%8d",lista[i]);
+            }
+            str += "\n";
+            for (int i = 0; i < lista.length; i++){
+                str += String.format("%8d",i);
+            }
         }
         return str;
     }
@@ -115,13 +122,13 @@ public class ListaNumeros
     public int[] buscarPosicionesDe(int numero) {
         int[] posicion;
         int longitud = 0;
+        int contador = 0;
         for (int i = 0; i < lista.length; i++){
             if (numero == lista[i]){
                 longitud++;
             }
         }
         posicion = new int[longitud];
-        int contador = 0;
         for (int i = 0; i < lista.length; i++){
             if (numero == lista[i]){
                 posicion[contador] = i;
@@ -143,17 +150,28 @@ public class ListaNumeros
      * 
      */
     public int buscarBinario(int numero) {
-
-        return 0;
-
+        int[] copia = Arrays.copyOf(lista, (lista.length - 1));
+        Arrays.sort(copia);
+        int posicion = Arrays.binarySearch(copia, numero);
+        if (posicion < 0){
+            posicion = -1;
+        }
+        return posicion;
     }
 
     /**
      * borra el primer elemento de la lista
      */
     public void borrarPrimero() {
-        
-
+        for (int i = 0; i < lista.length - 1; i++){
+            lista[i] = lista[i + 1];
+        }
+        if (!estaVacia()){
+            pos--;
+        }
+        else {
+            System.out.println("La lista está vacía");
+        }
     }
 
     /**
@@ -166,7 +184,23 @@ public class ListaNumeros
      *  
      */
     public void invertir(int n) {
-
+        int grupos = lista.length / n;
+        int longitud = 0;
+        int numero = n;
+        int mitad = n / 2;
+        for (int i = 0; i < grupos; i++){
+            for (int j = 0; j < mitad; j++){
+                int aux = lista[longitud];
+                lista[longitud] = lista[numero - (j + 1)];
+                lista[numero - (j + 1)] = aux;
+                longitud++;
+            }
+            numero += n;
+            longitud += mitad;
+            if (n % 2 != 0){
+                longitud++;
+            }
+        }
     }
 
     /**
